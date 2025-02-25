@@ -56,10 +56,11 @@
             outline: none;
         }
 
-        /* ✅ Fix button size to match input */
+        /* ✅ Fix button height to exactly match input */
         button {
-            height: 44px; /* ✅ Matches input height */
-            padding: 0 20px; /* ✅ Keep width dynamic */
+            height: 44px; /* Matches input height */
+            min-width: 110px; /* Prevents it from being too small */
+            padding: 0 18px; /* Adjust for text */
             font-size: 16px;
             font-weight: 600;
             background: linear-gradient(90deg, #0A84FF, #007AFF);
@@ -68,12 +69,12 @@
             border-radius: 10px;
             cursor: pointer;
             display: flex;
-            align-items: center; /* ✅ Aligns icon & text */
+            align-items: center;
             justify-content: center;
             transition: all 0.2s ease-in-out;
         }
 
-        /* ✅ Reduce size of the emoji inside button */
+        /* ✅ Reduce emoji size inside button */
         button span {
             font-size: 18px;
             margin-left: 5px; /* Space between text and emoji */
@@ -144,9 +145,6 @@
             }
 
             try {
-                // ✅ Ensure user interaction for mobile
-                await videoElement.play().catch(() => {});
-
                 // ✅ Smooth fade-in effect for loading instead of shifting UI
                 loadingIndicator.style.opacity = "1"; 
 
@@ -162,18 +160,20 @@
 
                 if (!response.ok) {
                     alert("Incorrect password or error retrieving video.");
-                    loadingIndicator.style.opacity = "0"; // ✅ Hide loading smoothly
+                    loadingIndicator.style.opacity = "0"; // Hide loading smoothly
                     return;
                 }
+
+                // ✅ Show video and hide controls
+                videoElement.style.display = "block";
+                controls.style.display = "none";
 
                 // ✅ Create a stream for progressive playback
                 const mediaSource = new MediaSource();
                 videoElement.src = URL.createObjectURL(mediaSource);
-                videoElement.style.display = "block";
 
                 mediaSource.addEventListener("sourceopen", async () => {
                     const sourceBuffer = mediaSource.addSourceBuffer('video/mp4');
-
                     const reader = response.body.getReader();
 
                     async function appendChunks() {
@@ -189,19 +189,18 @@
                     appendChunks();
                 });
 
-                // ✅ Hide UI elements after video starts
-                controls.style.display = "none";
-                loadingIndicator.style.opacity = "0"; // ✅ Hide loading smoothly
-
-                // ✅ Ensure playback starts
-                videoElement.play().catch(error => {
-                    console.error("Playback error:", error);
-                    alert("Tap the video to play.");
+                // ✅ Ensure playback starts on mobile after interaction
+                videoElement.addEventListener('canplay', () => {
+                    videoElement.play().catch(() => {
+                        alert("Tap the video to start playing.");
+                    });
                 });
-                
+
+                // ✅ Hide loading indicator
+                loadingIndicator.style.opacity = "0";
+
                 // ✅ Prevent right-click downloads
                 videoElement.addEventListener('contextmenu', event => event.preventDefault());
-
             } catch (error) {
                 console.error("Error fetching video:", error);
                 alert("Failed to load the video.");
