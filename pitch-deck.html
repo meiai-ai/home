@@ -3,99 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Secure Video Player</title>
+    <title>Pitch Deck</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <style>
+        /* ✅ Make body full-screen */
         body {
             background-color: black;
             color: white;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
             height: 100vh;
-            text-align: center;
+            width: 100vw;
+            margin: 0;
+            overflow: hidden;
             font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "Helvetica Neue", Helvetica, Arial, sans-serif;
-            margin: 0; /* ✅ Remove margin for fullscreen */
-            overflow: hidden; /* ✅ Prevent scrolling */
         }
 
+        /* ✅ Fullscreen video container */
         #videoContainer {
+            width: 100vw;
+            height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 80%;
-            max-width: 1200px;
         }
 
-        h2 {
-            font-weight: 600;
-            margin-bottom: 20px;
+        /* ✅ Hide everything when the video plays */
+        #controls {
+            text-align: center;
+            position: absolute;
+            z-index: 10;
+        }
+
+        /* ✅ Make video take full screen */
+        video {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover; /* ✅ Ensure full coverage */
+        }
+
+        /* ✅ Input and Button Styling */
+        input, button {
+            font-size: 16px;
+            padding: 12px;
+            border-radius: 12px;
+            border: none;
+            text-align: center;
+            margin: 10px;
         }
 
         input {
-            margin: 10px;
-            padding: 12px;
-            font-size: 16px;
             width: 280px;
-            text-align: center;
-            border: none;
-            border-radius: 12px;
             background-color: #1c1c1e;
             color: white;
-            outline: none;
-            transition: all 0.2s ease-in-out;
-        }
-
-        input:focus {
-            background-color: #2c2c2e;
-            box-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
         }
 
         button {
-            margin: 10px;
-            padding: 12px 24px;
-            font-size: 16px;
-            font-weight: 600;
             background: linear-gradient(90deg, #007aff, #005ecb);
             color: white;
-            border: none;
-            border-radius: 12px;
             cursor: pointer;
-            transition: all 0.2s ease-in-out;
         }
 
         button:hover {
             background: linear-gradient(90deg, #005ecb, #004ba0);
         }
-
-        video {
-            display: none; /* ✅ Hidden until loaded */
-            width: 100%;
-            max-height: 100vh;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
-        }
     </style>
 </head>
 <body>
 
-    <div id="videoContainer">  <!-- ✅ Wrapper to make video full width -->
-        <h2 id="welcomeText">Welcome! Please enter password to unlock the pitch deck</h2>
+    <!-- ✅ Controls Section (Hidden after unlocking) -->
+    <div id="controls">
+        <h2>Enter Password to Unlock Pitch Deck</h2>
         <input type="password" id="videoPassword" placeholder="Enter password">
         <button onclick="authorizeAndPlay()">Unlock 🚀</button>
+    </div>
+
+    <!-- ✅ Video Container -->
+    <div id="videoContainer">
         <video id="videoPlayer" controls></video>
     </div>
 
     <script>
-        // Initialize Supabase Client with anon key
+        // ✅ Initialize Supabase Client
         const supabaseUrl = "https://tafnkthbexkmaifstqdz.supabase.co";
         const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRhZm5rdGhiZXhrbWFpZnN0cWR6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDAxODkzMjcsImV4cCI6MjA1NTc2NTMyN30.VE3pPEAExoPbn5YCRrR2b41RpZqg8EfujaSb9Gs-f64";
 
         async function authorizeAndPlay() {
             const password = document.getElementById("videoPassword").value;
-            const unlockButton = document.querySelector("button");
-            const container = document.getElementById("videoContainer"); // ✅ Added for wide mode
+            const controls = document.getElementById("controls");
+            const videoElement = document.getElementById("videoPlayer");
 
             if (!password) {
                 alert("Please enter a password.");
@@ -103,14 +101,7 @@
             }
 
             try {
-                // ✅ Get video element
-                const videoElement = document.getElementById("videoPlayer");
-                if (!videoElement) {
-                    console.error("Video element not found in the document.");
-                    return;
-                }
-
-                // ✅ Call the new streaming Edge Function
+                // ✅ Fetch video from Edge Function
                 const response = await fetch(`${supabaseUrl}/functions/v1/decryptPitchDeck`, {
                     method: "POST",
                     headers: {
@@ -120,18 +111,8 @@
                     body: JSON.stringify({ password })
                 });
 
-                if (response.status === 401) {
-                    alert("Incorrect password or unauthorized access.");
-                    return;
-                }
-
-                if (response.status === 500) {
-                    alert("Server error while retrieving the video.");
-                    return;
-                }
-
                 if (!response.ok) {
-                    alert("Unexpected error occurred.");
+                    alert("Incorrect password or error retrieving video.");
                     return;
                 }
 
@@ -139,23 +120,17 @@
                 const videoBlob = await response.blob();
                 const videoUrl = URL.createObjectURL(videoBlob);
 
-                // ✅ Set the video source & show the player
+                // ✅ Set video source and make it visible
                 videoElement.src = videoUrl;
                 videoElement.style.display = "block";
-                videoElement.controls = true;
                 videoElement.play();
 
-                // ✅ Hide the password input & button
-                passwordInput.style.display = "none";
-                unlockButton.style.display = "none";
+                // ✅ Hide the input & button container
+                controls.style.display = "none";
 
-                // ✅ Expand video to full width
-                container.style.width = "100vw";
-                container.style.height = "100vh";
-                videoElement.style.width = "100%";
-                videoElement.style.height = "100%";
-
+                // ✅ Prevent right-click downloads
                 videoElement.addEventListener('contextmenu', event => event.preventDefault());
+
             } catch (error) {
                 console.error("Error fetching video:", error);
                 alert("Failed to load the video.");
