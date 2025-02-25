@@ -114,9 +114,13 @@
                     return;
                 }
 
-                // ✅ Set video source directly to the streamed video
+                // ✅ Convert response into a Blob for secure playback
+                const videoBlob = await response.blob();
+                const videoUrl = URL.createObjectURL(videoBlob);
+
+                // ✅ Set video source to the Blob URL
                 const videoElement = document.getElementById("videoPlayer");
-                videoElement.src = `${supabaseUrl}/functions/v1/serveVideo?password=${encodeURIComponent(password)}`;
+                videoElement.src = videoUrl;
                 videoElement.style.display = "block";
                 videoElement.controls = true;
 
