@@ -90,7 +90,7 @@
 
             try {
                 // ✅ Call the new streaming Edge Function
-                const response = await fetch(`${supabaseUrl}/functions/v1/serveVideo`, {
+                const response = await fetch(`${supabaseUrl}/functions/v1/decryptPitchDeck`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
