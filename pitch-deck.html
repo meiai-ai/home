@@ -97,7 +97,10 @@
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        "apikey": supabaseKey
+                        "apikey": supabaseKey,
+                        "Access-Control-Allow-Origin": "*",  // Allow CORS (Frontend Request)
+                        "Access-Control-Allow-Methods": "POST, OPTIONS",
+                        "Access-Control-Allow-Headers": "Content-Type, apikey"
                     },
                     body: JSON.stringify({ password })
                 });
