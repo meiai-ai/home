@@ -82,7 +82,7 @@
         const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRhZm5rdGhiZXhrbWFpZnN0cWR6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDAxODkzMjcsImV4cCI6MjA1NTc2NTMyN30.VE3pPEAExoPbn5YCRrR2b41RpZqg8EfujaSb9Gs-f64";
 
         // Initialize Supabase client
-        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+        // const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
         async function authorizeAndPlay() {
             const password = document.getElementById("videoPassword").value;
@@ -97,20 +97,26 @@
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        "apikey": supabaseKey 
+                        "apikey": supabaseKey
                     },
                     body: JSON.stringify({ password })
                 });
+
+                console.log("log1");
 
                 if (response.status === 401) {
                     alert("Incorrect password or unauthorized access.");
                     return;
                 }
 
+                console.log("log2");
+
                 if (response.status === 500) {
                     alert("Server error while decrypting the video.");
                     return;
                 }
+
+                console.log("log3");
 
                 if (!response.ok) {
                     alert("Unexpected error occurred.");
