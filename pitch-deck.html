@@ -6,7 +6,7 @@
     <title>Pitch Deck</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <style>
-        /* ✅ Ensure Fullscreen Layout */
+        /* ✅ Fullscreen Layout */
         body {
             background-color: black;
             color: white;
@@ -20,19 +20,19 @@
             font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "Helvetica Neue", Helvetica, Arial, sans-serif;
         }
 
-        /* ✅ Center the controls and style them */
+        /* ✅ Center Controls */
         #controls {
             text-align: center;
             display: flex;
             flex-direction: column;
             align-items: center;
             position: absolute;
-            top: 35%; /* ✅ Move it higher */
+            top: 35%;
             left: 50%;
             transform: translate(-50%, -50%);
         }
 
-        /* ✅ Fix input and button alignment */
+        /* ✅ Restore Input & Button Look */
         #inputContainer {
             display: flex;
             gap: 10px;
@@ -42,10 +42,9 @@
             border-radius: 14px;
         }
 
-        /* ✅ Password Input */
         input {
             width: 220px;
-            height: 44px; /* ✅ Set fixed height */
+            height: 44px;
             padding: 10px;
             font-size: 16px;
             text-align: center;
@@ -56,11 +55,9 @@
             outline: none;
         }
 
-        /* ✅ Fix button height to exactly match input */
         button {
-            height: 44px; /* Matches input height */
-            min-width: 110px; /* Prevents it from being too small */
-            padding: 0 18px; /* Adjust for text */
+            height: 44px;
+            padding: 0 20px;
             font-size: 16px;
             font-weight: 600;
             background: linear-gradient(90deg, #0A84FF, #007AFF);
@@ -74,10 +71,9 @@
             transition: all 0.2s ease-in-out;
         }
 
-        /* ✅ Reduce emoji size inside button */
         button span {
             font-size: 18px;
-            margin-left: 5px; /* Space between text and emoji */
+            margin-left: 5px;
         }
 
         button:hover {
@@ -90,11 +86,11 @@
             font-size: 14px;
             color: rgba(255,255,255,0.6);
             margin-top: 10px;
-            opacity: 0; /* ✅ Initially hidden without taking up space */
-            transition: opacity 0.3s ease-in-out; /* ✅ Smooth fade-in effect */
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
         }
 
-        /* ✅ Proper Full-Screen Video */
+        /* ✅ Fullscreen Video */
         #videoContainer {
             width: 100vw;
             height: 100vh;
@@ -107,13 +103,13 @@
             display: none;
             width: 100vw;
             height: 100vh;
-            object-fit: contain; /* ✅ Prevents cutting */
+            object-fit: contain;
         }
     </style>
 </head>
 <body>
 
-    <!-- ✅ Controls Section (Hidden after unlocking) -->
+    <!-- ✅ Controls Section -->
     <div id="controls">
         <h2>Unlock Pitch Deck</h2>
         <div id="inputContainer">
@@ -125,7 +121,7 @@
     
     <!-- ✅ Video Container -->
     <div id="videoContainer">
-        <video id="videoPlayer" controls></video>
+        <video id="videoPlayer" controls playsinline muted></video>
     </div>
 
     <script>
@@ -145,10 +141,10 @@
             }
 
             try {
-                // ✅ Smooth fade-in effect for loading instead of shifting UI
-                loadingIndicator.style.opacity = "1"; 
+                // ✅ Show loading indicator
+                loadingIndicator.style.opacity = "1";
 
-                // ✅ Stream video from Edge Function
+                // ✅ Fetch video from Edge Function
                 const response = await fetch(`${supabaseUrl}/functions/v1/decryptPitchDeck`, {
                     method: "POST",
                     headers: {
@@ -160,7 +156,7 @@
 
                 if (!response.ok) {
                     alert("Incorrect password or error retrieving video.");
-                    loadingIndicator.style.opacity = "0"; // Hide loading smoothly
+                    loadingIndicator.style.opacity = "0";
                     return;
                 }
 
@@ -168,32 +164,18 @@
                 videoElement.style.display = "block";
                 controls.style.display = "none";
 
-                // ✅ Create a stream for progressive playback
-                const mediaSource = new MediaSource();
-                videoElement.src = URL.createObjectURL(mediaSource);
+                // ✅ Load and play video properly
+                const videoBlob = await response.blob();
+                videoElement.src = URL.createObjectURL(videoBlob);
+                videoElement.load();
 
-                mediaSource.addEventListener("sourceopen", async () => {
-                    const sourceBuffer = mediaSource.addSourceBuffer('video/mp4');
-                    const reader = response.body.getReader();
+                // ✅ Ensure mobile support
+                videoElement.setAttribute("playsinline", "true");
+                videoElement.setAttribute("muted", "true");
 
-                    async function appendChunks() {
-                        const { done, value } = await reader.read();
-                        if (done) {
-                            mediaSource.endOfStream();
-                            return;
-                        }
-                        sourceBuffer.appendBuffer(value);
-                        sourceBuffer.addEventListener("updateend", appendChunks, { once: true });
-                    }
-
-                    appendChunks();
-                });
-
-                // ✅ Ensure playback starts on mobile after interaction
-                videoElement.addEventListener('canplay', () => {
-                    videoElement.play().catch(() => {
-                        alert("Tap the video to start playing.");
-                    });
+                // ✅ Try autoplay (or prompt user to tap)
+                videoElement.play().catch(() => {
+                    alert("Tap the video to start playback.");
                 });
 
                 // ✅ Hide loading indicator
@@ -201,10 +183,11 @@
 
                 // ✅ Prevent right-click downloads
                 videoElement.addEventListener('contextmenu', event => event.preventDefault());
+
             } catch (error) {
                 console.error("Error fetching video:", error);
                 alert("Failed to load the video.");
-                loadingIndicator.style.opacity = "0"; // ✅ Hide loading smoothly
+                loadingIndicator.style.opacity = "0";
             }
         }
     </script>
