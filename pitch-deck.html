@@ -6,7 +6,7 @@
     <title>Pitch Deck</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <style>
-        /* ✅ Fullscreen Layout */
+        /* ✅ Ensure Fullscreen Layout */
         body {
             background-color: black;
             color: white;
@@ -20,36 +20,36 @@
             font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "Helvetica Neue", Helvetica, Arial, sans-serif;
         }
 
-        /* ✅ Center Controls */
+        /* ✅ Center the controls */
         #controls {
             text-align: center;
             display: flex;
             flex-direction: column;
             align-items: center;
             position: absolute;
-            top: 40%;
+            top: 35%;
             left: 50%;
             transform: translate(-50%, -50%);
         }
 
-        /* ✅ Smooth & Balanced Input/Button Styling */
+        /* ✅ Input & button wrapper */
         #inputContainer {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             align-items: center;
-            background: rgba(255, 255, 255, 0.12);
-            padding: 10px;
+            background: rgba(255,255,255,0.08);
+            padding: 8px;
             border-radius: 16px;
-            box-shadow: 0px 4px 12px rgba(255, 255, 255, 0.05);
         }
 
+        /* ✅ Password Input (same height as button) */
         input {
             width: 240px;
-            height: 48px;
+            height: 48px; /* ✅ Exact match to button */
             padding: 12px;
             font-size: 16px;
             text-align: center;
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255,255,255,0.15);
             color: white;
             border: none;
             border-radius: 12px;
@@ -57,18 +57,21 @@
             transition: all 0.2s ease-in-out;
         }
 
+        /* ✅ Ensure placeholder text is subtle */
         input::placeholder {
-            color: rgba(255, 255, 255, 0.5);
+            color: rgba(255,255,255,0.5);
         }
 
+        /* ✅ Input focus effect */
         input:focus {
-            background: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+            background: rgba(255,255,255,0.2);
+            box-shadow: 0 0 10px rgba(255,255,255,0.2);
         }
 
+        /* ✅ Button (same height as input) */
         button {
-            height: 48px;
-            padding: 0 24px;
+            height: 48px; /* ✅ Matches input height */
+            padding: 0 24px; /* ✅ Keeps width dynamic */
             font-size: 16px;
             font-weight: 600;
             background: linear-gradient(90deg, #0A84FF, #007AFF);
@@ -83,22 +86,24 @@
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
         }
 
+        /* ✅ Reduce emoji size inside button */
         button span {
             font-size: 18px;
             margin-left: 6px;
         }
 
+        /* ✅ Improve hover effect */
         button:hover {
             background: linear-gradient(90deg, #007AFF, #005EC2);
-            transform: scale(1.07);
+            transform: scale(1.05);
         }
 
         /* ✅ Loading Indicator */
         #loading {
             font-size: 14px;
-            color: rgba(255, 255, 255, 0.7);
-            margin-top: 12px;
-            opacity: 0;
+            color: rgba(255,255,255,0.6);
+            margin-top: 10px;
+            opacity: 0; /* ✅ Initially hidden */
             transition: opacity 0.3s ease-in-out;
         }
 
@@ -111,11 +116,12 @@
             justify-content: center;
         }
 
+        /* ✅ Video should scale correctly */
         video {
             display: none;
             width: 100vw;
             height: 100vh;
-            object-fit: contain;
+            object-fit: contain; /* ✅ Prevents cropping */
         }
     </style>
 </head>
