@@ -16,6 +16,16 @@
             height: 100vh;
             text-align: center;
             font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            margin: 0; /* ✅ Remove margin for fullscreen */
+            overflow: hidden; /* ✅ Prevent scrolling */
+        }
+
+        #videoContainer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 80%;
+            max-width: 1200px;
         }
 
         h2 {
@@ -60,10 +70,9 @@
         }
 
         video {
-            display: none;
-            margin-top: 20px;
-            width: 80%;
-            max-width: 800px;
+            display: none; /* ✅ Hidden until loaded */
+            width: 100%;
+            max-height: 100vh;
             border-radius: 12px;
             box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
         }
@@ -71,10 +80,12 @@
 </head>
 <body>
 
-    <h2>Welcome! Please enter password to unlock the pitch deck</h2>
-    <input type="password" id="videoPassword" placeholder="Enter password">
-    <button onclick="authorizeAndPlay()">Unlock 🚀</button>
-    <video id="videoPlayer" controls></video>
+    <div id="videoContainer">  <!-- ✅ Wrapper to make video full width -->
+        <h2 id="welcomeText">Welcome! Please enter password to unlock the pitch deck</h2>
+        <input type="password" id="videoPassword" placeholder="Enter password">
+        <button onclick="authorizeAndPlay()">Unlock 🚀</button>
+        <video id="videoPlayer" controls></video>
+    </div>
 
     <script>
         // Initialize Supabase Client with anon key
@@ -83,6 +94,9 @@
 
         async function authorizeAndPlay() {
             const password = document.getElementById("videoPassword").value;
+            const unlockButton = document.querySelector("button");
+            const container = document.getElementById("videoContainer"); // ✅ Added for wide mode
+
             if (!password) {
                 alert("Please enter a password.");
                 return;
@@ -121,10 +135,25 @@
                     return;
                 }
 
-                videoElement.src = URL.createObjectURL(await response.blob());
+                // ✅ Convert response to Blob URL
+                const videoBlob = await response.blob();
+                const videoUrl = URL.createObjectURL(videoBlob);
+
+                // ✅ Set the video source & show the player
+                videoElement.src = videoUrl;
                 videoElement.style.display = "block";
                 videoElement.controls = true;
                 videoElement.play();
+
+                // ✅ Hide the password input & button
+                passwordInput.style.display = "none";
+                unlockButton.style.display = "none";
+
+                // ✅ Expand video to full width
+                container.style.width = "100vw";
+                container.style.height = "100vh";
+                videoElement.style.width = "100%";
+                videoElement.style.height = "100%";
 
                 videoElement.addEventListener('contextmenu', event => event.preventDefault());
             } catch (error) {
