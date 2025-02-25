@@ -89,6 +89,13 @@
             }
 
             try {
+                // ✅ Get video element
+                const videoElement = document.getElementById("videoPlayer");
+                if (!videoElement) {
+                    console.error("Video element not found in the document.");
+                    return;
+                }
+
                 // ✅ Call the new streaming Edge Function
                 const response = await fetch(`${supabaseUrl}/functions/v1/decryptPitchDeck`, {
                     method: "POST",
