@@ -121,9 +121,11 @@
                     return;
                 }
 
-                videoElement.src = "https://tafnkthbexkmaifstqdz.supabase.co/functions/v1/decryptPitchDeck"; 
+                videoElement.src = URL.createObjectURL(await response.blob());
                 videoElement.style.display = "block";
                 videoElement.controls = true;
+                videoElement.play();
+
                 videoElement.addEventListener('contextmenu', event => event.preventDefault());
             } catch (error) {
                 console.error("Error fetching video:", error);
