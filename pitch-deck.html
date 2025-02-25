@@ -20,6 +20,12 @@
             font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "Helvetica Neue", Helvetica, Arial, sans-serif;
         }
 
+        html, body {
+            height: 100vh;
+            min-height: -webkit-fill-available; /* ✅ Prevents Safari from resizing the viewport */
+            overflow: hidden;
+        }
+        
         /* ✅ Center the controls */
         #controls {
             text-align: center;
@@ -117,6 +123,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            padding-bottom: env(safe-area-inset-bottom); /* ✅ Fix overlap */
         }
 
         /* ✅ Video should scale correctly */
@@ -125,6 +132,7 @@
             width: 100vw;
             height: 100vh;
             object-fit: contain; /* ✅ Prevents cropping */
+            padding-bottom: env(safe-area-inset-bottom); /* ✅ Fix for iOS notch area */
         }
     </style>
 </head>
