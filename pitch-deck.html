@@ -81,9 +81,6 @@
         const supabaseUrl = "https://tafnkthbexkmaifstqdz.supabase.co";
         const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRhZm5rdGhiZXhrbWFpZnN0cWR6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDAxODkzMjcsImV4cCI6MjA1NTc2NTMyN30.VE3pPEAExoPbn5YCRrR2b41RpZqg8EfujaSb9Gs-f64";
 
-        // Initialize Supabase client
-        // const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
-
         async function authorizeAndPlay() {
             const password = document.getElementById("videoPassword").value;
             if (!password) {
@@ -92,60 +89,43 @@
             }
 
             try {
-                // Call Supabase Edge Function to decrypt video
-                const response = await fetch(`${supabaseUrl}/functions/v1/decryptPitchDeck`, {
+                // ✅ Call the new streaming Edge Function
+                const response = await fetch(`${supabaseUrl}/functions/v1/serveVideo`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        "apikey": supabaseKey,
-                        "Access-Control-Allow-Origin": "*",  // Allow CORS (Frontend Request)
-                        "Access-Control-Allow-Methods": "POST, OPTIONS",
-                        "Access-Control-Allow-Headers": "Content-Type, apikey"
+                        "apikey": supabaseKey
                     },
                     body: JSON.stringify({ password })
                 });
-
-                console.log("log1");
 
                 if (response.status === 401) {
                     alert("Incorrect password or unauthorized access.");
                     return;
                 }
 
-                console.log("log2");
-
                 if (response.status === 500) {
-                    alert("Server error while decrypting the video.");
+                    alert("Server error while retrieving the video.");
                     return;
                 }
-
-                console.log("log3");
 
                 if (!response.ok) {
                     alert("Unexpected error occurred.");
                     return;
                 }
 
-                // Convert response to a Blob for video playback
-                const decryptedData = await response.blob();
-                playDecryptedVideo(decryptedData);
+                // ✅ Set video source directly to the streamed video
+                const videoElement = document.getElementById("videoPlayer");
+                videoElement.src = `${supabaseUrl}/functions/v1/serveVideo?password=${encodeURIComponent(password)}`;
+                videoElement.style.display = "block";
+                videoElement.controls = true;
+
+                // Block right-click & downloads
+                videoElement.addEventListener('contextmenu', event => event.preventDefault());
             } catch (error) {
-                console.error("Error fetching or decrypting video:", error);
-                alert("Failed to process the video.");
+                console.error("Error fetching video:", error);
+                alert("Failed to load the video.");
             }
-        }
-
-        // Play the decrypted video
-        function playDecryptedVideo(blob) {
-            const videoUrl = URL.createObjectURL(blob);
-            const videoElement = document.getElementById("videoPlayer");
-
-            videoElement.src = videoUrl;
-            videoElement.style.display = "block";
-            videoElement.controls = true;
-
-            // Block right-click & downloads
-            videoElement.addEventListener('contextmenu', event => event.preventDefault());
         }
     </script>
 
