@@ -79,7 +79,8 @@
             font-size: 14px;
             color: rgba(255,255,255,0.6);
             margin-top: 10px;
-            display: none;
+            opacity: 0; /* ✅ Initially hidden without taking up space */
+            transition: opacity 0.3s ease-in-out; /* ✅ Smooth fade-in effect */
         }
 
         /* ✅ Proper Full-Screen Video */
@@ -133,8 +134,8 @@
             }
 
             try {
-                // ✅ Show loading text
-                loadingIndicator.style.display = "block";
+                // ✅ Smooth fade-in effect for loading instead of shifting UI
+                loadingIndicator.style.opacity = "1"; 
 
                 // ✅ Stream video from Edge Function
                 const response = await fetch(`${supabaseUrl}/functions/v1/decryptPitchDeck`, {
@@ -148,7 +149,7 @@
 
                 if (!response.ok) {
                     alert("Incorrect password or error retrieving video.");
-                    loadingIndicator.style.display = "none"; // Hide loading on error
+                    loadingIndicator.style.opacity = "0"; // ✅ Hide loading smoothly
                     return;
                 }
 
@@ -177,7 +178,7 @@
 
                 // ✅ Hide UI elements after video starts
                 controls.style.display = "none";
-                loadingIndicator.style.display = "none";
+                loadingIndicator.style.opacity = "0"; // ✅ Hide loading smoothly
 
                 // ✅ Ensure playback starts
                 videoElement.play();
@@ -188,7 +189,7 @@
             } catch (error) {
                 console.error("Error fetching video:", error);
                 alert("Failed to load the video.");
-                loadingIndicator.style.display = "none"; // Hide loading on failure
+                loadingIndicator.style.opacity = "0"; // ✅ Hide loading smoothly
             }
         }
     </script>
