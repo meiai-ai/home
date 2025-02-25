@@ -38,15 +38,14 @@
             gap: 10px;
             align-items: center;
             background: rgba(255,255,255,0.08);
-            padding: 8px;
+            padding: 0; /* ✅ Remove extra padding */
             border-radius: 16px;
         }
 
-        /* ✅ Password Input (same height as button) */
+        /* ✅ Password Input (matches button height exactly) */
         input {
             width: 240px;
-            height: 48px; /* ✅ Exact match to button */
-            padding: 12px;
+            height: 50px; /* ✅ Exact match to button */
             font-size: 16px;
             text-align: center;
             background: rgba(255,255,255,0.15);
@@ -54,7 +53,9 @@
             border: none;
             border-radius: 12px;
             outline: none;
-            transition: all 0.2s ease-in-out;
+            display: flex;
+            align-items: center; /* ✅ Aligns text perfectly */
+            justify-content: center;
         }
 
         /* ✅ Ensure placeholder text is subtle */
@@ -62,16 +63,11 @@
             color: rgba(255,255,255,0.5);
         }
 
-        /* ✅ Input focus effect */
-        input:focus {
-            background: rgba(255,255,255,0.2);
-            box-shadow: 0 0 10px rgba(255,255,255,0.2);
-        }
-
-        /* ✅ Button (same height as input) */
+        /* ✅ Fix button height to exactly match input */
         button {
-            height: 48px; /* ✅ Matches input height */
-            padding: 0 24px; /* ✅ Keeps width dynamic */
+            height: 50px; /* ✅ Matches input height */
+            min-width: 110px; /* Prevents it from being too small */
+            padding: 0 24px;
             font-size: 16px;
             font-weight: 600;
             background: linear-gradient(90deg, #0A84FF, #007AFF);
@@ -86,7 +82,7 @@
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
         }
 
-        /* ✅ Reduce emoji size inside button */
+        /* ✅ Reduce size of emoji inside button */
         button span {
             font-size: 18px;
             margin-left: 6px;
@@ -96,32 +92,6 @@
         button:hover {
             background: linear-gradient(90deg, #007AFF, #005EC2);
             transform: scale(1.05);
-        }
-
-        /* ✅ Loading Indicator */
-        #loading {
-            font-size: 14px;
-            color: rgba(255,255,255,0.6);
-            margin-top: 10px;
-            opacity: 0; /* ✅ Initially hidden */
-            transition: opacity 0.3s ease-in-out;
-        }
-
-        /* ✅ Fullscreen Video */
-        #videoContainer {
-            width: 100vw;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* ✅ Video should scale correctly */
-        video {
-            display: none;
-            width: 100vw;
-            height: 100vh;
-            object-fit: contain; /* ✅ Prevents cropping */
         }
     </style>
 </head>
