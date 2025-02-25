@@ -58,13 +58,13 @@
         }
 
         input {
-            width: 280px;
+            width: 240px;
             background-color: #1c1c1e;
             color: white;
         }
 
         button {
-            padding: 12px 24px;
+            padding: 12px 20px;
             font-size: 16px;
             font-weight: 600;
             background: linear-gradient(90deg, #007aff, #005ecb);
@@ -92,9 +92,11 @@
 
     <!-- ✅ Controls Section (Hidden after unlocking) -->
     <div id="controls">
-        <h2>Enter Password to Unlock Pitch Deck</h2>
-        <input type="password" id="videoPassword" placeholder="Enter password">
-        <button onclick="authorizeAndPlay()">Unlock 🚀</button>
+        <h2>Unlock Pitch Deck</h2>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="password" id="videoPassword" placeholder="Enter password">
+            <button onclick="authorizeAndPlay()">Unlock 🚀</button>
+        </div>
         <div id="loading">Loading video...</div>
     </div>
 
