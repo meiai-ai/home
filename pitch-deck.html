@@ -6,14 +6,39 @@
     <title>Pitch Deck</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <style>
-        /* Center text and refine heading */
-        h2 {
-            font-weight: 600;
-            font-size: 20px;
-            margin-bottom: 14px;
+        /* ✅ Ensure Fullscreen Layout */
+        body {
+            background-color: black;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            width: 100vw;
+            margin: 0;
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "Helvetica Neue", Helvetica, Arial, sans-serif;
         }
 
-        /* Sleek, semi-transparent password input */
+        /* ✅ Center the controls and style them */
+        #controls {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* ✅ Fix input and button alignment */
+        #inputContainer {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            background: rgba(255,255,255,0.08);
+            padding: 10px 14px;
+            border-radius: 14px;
+        }
+
+        /* ✅ Password Input */
         input {
             width: 220px;
             padding: 12px;
@@ -27,16 +52,7 @@
             transition: all 0.2s ease-in-out;
         }
 
-        input::placeholder {
-            color: rgba(255,255,255,0.5);
-        }
-
-        /* Slight glow effect on focus */
-        input:focus {
-            background: rgba(255,255,255,0.15);
-            box-shadow: 0 0 10px rgba(255,255,255,0.2);
-        }
-
+        /* ✅ Button Styling */
         button {
             padding: 12px 24px;
             font-size: 16px;
@@ -54,12 +70,28 @@
             transform: scale(1.05);
         }
 
-        /* Subtle loading text */
+        /* ✅ Loading Indicator */
         #loading {
             font-size: 14px;
             color: rgba(255,255,255,0.6);
             margin-top: 10px;
             display: none;
+        }
+
+        /* ✅ Proper Full-Screen Video */
+        #videoContainer {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        video {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            object-fit: contain; /* ✅ Prevents cutting */
         }
     </style>
 </head>
@@ -68,13 +100,13 @@
     <!-- ✅ Controls Section (Hidden after unlocking) -->
     <div id="controls">
         <h2>Unlock Pitch Deck</h2>
-        <div style="display: flex; gap: 12px; align-items: center; background: rgba(255,255,255,0.08); padding: 10px 14px; border-radius: 14px;">
+        <div id="inputContainer">
             <input type="password" id="videoPassword" placeholder="Enter password">
             <button onclick="authorizeAndPlay()">Unlock 🚀</button>
         </div>
         <div id="loading">Loading video...</div>
     </div>
-
+    
     <!-- ✅ Video Container -->
     <div id="videoContainer">
         <video id="videoPlayer" controls></video>
