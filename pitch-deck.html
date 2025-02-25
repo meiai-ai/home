@@ -77,9 +77,9 @@
     <video id="videoPlayer" controls></video>
 
     <script>
-        // Initialize Supabase Client
+        // Initialize Supabase Client with anon key
         const supabase = supabase.createClient(
-            "https://tafnkthbexkmaifstqdz.supabase.co/decryptPitchDeck",
+            "https://tafnkthbexkmaifstqdz.supabase.co",
             "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRhZm5rdGhiZXhrbWFpZnN0cWR6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDAxODkzMjcsImV4cCI6MjA1NTc2NTMyN30.VE3pPEAExoPbn5YCRrR2b41RpZqg8EfujaSb9Gs-f64"
         );
 
@@ -91,11 +91,12 @@
             }
 
             try {
-                // Call Edge Function to decrypt video
-                const response = await fetch("/decryptPitchDeck", {
+                // Call Supabase Edge Function to decrypt video
+                const response = await fetch("https://tafnkthbexkmaifstqdz.supabase.co/functions/v1/decryptPitchDeck", {
                     method: "POST",
                     headers: {
-                        "Content-Type": "application/json"
+                        "Content-Type": "application/json",
+                        "apikey": supabase.supabaseKey  // Include the anon key in the request
                     },
                     body: JSON.stringify({ password })
                 });
