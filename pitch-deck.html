@@ -78,10 +78,11 @@
 
     <script>
         // Initialize Supabase Client with anon key
-        const supabase = supabase.createClient(
-            "https://tafnkthbexkmaifstqdz.supabase.co",
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRhZm5rdGhiZXhrbWFpZnN0cWR6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDAxODkzMjcsImV4cCI6MjA1NTc2NTMyN30.VE3pPEAExoPbn5YCRrR2b41RpZqg8EfujaSb9Gs-f64"
-        );
+        const supabaseUrl = "https://tafnkthbexkmaifstqdz.supabase.co";
+        const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRhZm5rdGhiZXhrbWFpZnN0cWR6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDAxODkzMjcsImV4cCI6MjA1NTc2NTMyN30.VE3pPEAExoPbn5YCRrR2b41RpZqg8EfujaSb9Gs-f64";
+
+        // Initialize Supabase client
+        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
         async function authorizeAndPlay() {
             const password = document.getElementById("videoPassword").value;
@@ -92,11 +93,11 @@
 
             try {
                 // Call Supabase Edge Function to decrypt video
-                const response = await fetch("https://tafnkthbexkmaifstqdz.supabase.co/functions/v1/decryptPitchDeck", {
+                const response = await fetch(`${supabaseUrl}/functions/v1/decryptPitchDeck`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        "apikey": supabase.supabaseKey  // Include the anon key in the request
+                        "apikey": supabaseKey 
                     },
                     body: JSON.stringify({ password })
                 });
