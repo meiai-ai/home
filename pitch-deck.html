@@ -71,15 +71,15 @@
 </head>
 <body>
 
-    <h2>Welcome! Enter the password to unlock</h2>
+    <h2>Welcome! Please enter password to unlock the pitch deck</h2>
     <input type="password" id="videoPassword" placeholder="Enter password">
-    <button onclick="authorizeAndPlay()">Unlock Video</button>
+    <button onclick="authorizeAndPlay()">Unlock 🚀</button>
     <video id="videoPlayer" controls></video>
 
     <script>
         // Initialize Supabase Client
         const supabase = supabase.createClient(
-            "https://tafnkthbexkmaifstqdz.supabase.co",
+            "https://tafnkthbexkmaifstqdz.supabase.co/decryptPitchchDeck",
             "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRhZm5rdGhiZXhrbWFpZnN0cWR6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDAxODkzMjcsImV4cCI6MjA1NTc2NTMyN30.VE3pPEAExoPbn5YCRrR2b41RpZqg8EfujaSb9Gs-f64"
         );
 
