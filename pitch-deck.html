@@ -165,13 +165,18 @@
             word-wrap: break-word;
         }
 
-        #alertButton {
+        /* ✅ Button container to align to the right */
+        .alertFooter {
             display: flex;
-            align-self: flex-end; /* ✅ Aligns to the right */
+            justify-content: flex-end; /* ✅ Aligns button to the right */
+            margin-top: 12px;
+        }
+
+        #alertButton {
             background: linear-gradient(90deg, #0A84FF, #007AFF);
             color: white;
             border: none;
-            padding: 12px 26px;
+            padding: 12px 28px;
             font-size: 16px;
             font-weight: 600;
             border-radius: 14px; /* ✅ Matches input & main button */
@@ -217,8 +222,10 @@
 
     <!-- ✅ Custom alert -->
     <div id="customAlert">
-        <p id="alertMessage"></p>
-        <button id="alertButton" onclick="closeAlert()">OK</button>
+        <div id="alertMessage">Error message here</div>
+        <div class="alertFooter">
+            <button id="alertButton" onclick="closeAlert()">OK</button>
+        </div>
     </div>
 
     <script>
@@ -289,8 +296,16 @@
         }
 
         function showAlert(message) {
-            document.getElementById("alertMessage").textContent = message;
-            document.getElementById("customAlert").style.display = "block";
+            const alertBox = document.getElementById("customAlert");
+            const alertMessage = document.getElementById("alertMessage");
+
+            alertMessage.textContent = message;
+            alertBox.style.display = "block";
+
+            // ✅ Click anywhere on the alert box to close
+            alertBox.onclick = (event) => {
+                if (event.target.id === "customAlert") closeAlert();
+            };
         }
 
         function closeAlert() {
