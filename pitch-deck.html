@@ -183,7 +183,7 @@
                     body: JSON.stringify({ password })
                 });
 
-                if (response.status == 401) {
+                if (response.body.status == 401) {
                     alert("Incorrect password or error retrieving video.");
                     loadingIndicator.style.opacity = "0";
                     return;
