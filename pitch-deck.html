@@ -225,16 +225,17 @@
             transform: translate(-50%, -50%) scale(0.98);
         }
 
-        /* ✅ Dim background when contact is shown */
+        /* ✅ Background dim overlay when contact button is shown */
         #dimOverlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.4); /* ✅ Dim effect */
             display: none;
-            z-index: 1001; /* ✅ Below contact button, above video */
+            z-index: 1000; /* ✅ Below contact button, above video */
+            pointer-events: none; /* ✅ Allows interactions with video */
         }
 
         /* ✅ Fade-in animation */
