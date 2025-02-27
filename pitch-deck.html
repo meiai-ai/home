@@ -38,32 +38,33 @@
             transform: translate(-50%, -50%);
         }
 
-        /* ✅ Input & button wrapper */
-        #inputContainer {
+         /* ✅ Input & button wrapper (Apple-like rounded container) */
+         #inputContainer {
             display: flex;
             gap: 10px;
             align-items: center;
             background: rgba(255,255,255,0.08);
-            padding: 8px;
-            border-radius: 16px;
+            padding: 10px;
+            border-radius: 18px; /* ✅ More rounded for softer look */
         }
 
-        /* ✅ Password Input (same height as button) */
+        /* ✅ Password Input */
         input {
             width: 240px;
-            height: 48px; /* ✅ Matches button */
+            height: 50px; /* ✅ Slightly taller */
             font-size: 16px;
             text-align: center;
-            background: rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.12); /* ✅ Softer Apple-like transparency */
             color: white;
             border: none;
-            border-radius: 12px;
+            border-radius: 14px; /* ✅ More rounded */
             outline: none;
-            padding: 0 16px;
+            padding: 0 18px;
             display: flex;
-            align-items: center; /* ✅ Aligns text vertically */
+            align-items: center;
             justify-content: center;
-            line-height: 48px; /* ✅ Ensures text is centered */
+            line-height: 50px;
+            transition: all 0.2s ease-in-out;
         }
 
         /* ✅ Ensure placeholder text is subtle */
@@ -73,26 +74,26 @@
 
         /* ✅ Input focus effect */
         input:focus {
-            background: rgba(255,255,255,0.2);
-            box-shadow: 0 0 10px rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.18); /* ✅ Slightly more glow */
+            box-shadow: 0 0 12px rgba(255,255,255,0.25);
         }
 
-        /* ✅ Button (same height as input) */
+        /* ✅ Button (same height as input, softer style) */
         button {
-            height: 48px; /* ✅ Matches input height */
-            padding: 0 24px;
+            height: 50px; /* ✅ Matches input height */
+            padding: 0 26px;
             font-size: 16px;
             font-weight: 600;
             background: linear-gradient(90deg, #0A84FF, #007AFF);
             color: white;
             border: none;
-            border-radius: 12px;
+            border-radius: 14px; /* ✅ Softer edges */
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.2s ease-in-out;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.25); /* ✅ Softer Apple-like depth */
         }
 
         /* ✅ Reduce emoji size inside button */
@@ -101,10 +102,15 @@
             margin-left: 6px;
         }
 
-        /* ✅ Improve hover effect */
+        /* ✅ Improve hover effect (gentler scale effect) */
         button:hover {
             background: linear-gradient(90deg, #007AFF, #005EC2);
-            transform: scale(1.05);
+            transform: scale(1.04); /* ✅ Less aggressive scaling */
+        }
+
+        /* ✅ Improve button click effect */
+        button:active {
+            transform: scale(0.98);
         }
 
         /* ✅ Loading Indicator */
