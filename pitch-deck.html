@@ -183,6 +183,12 @@
                     body: JSON.stringify({ password })
                 });
 
+                // ✅ Log entire response object
+                console.log("Full response:", response);
+
+                // ✅ Log status separately
+                console.log("Response status:", response.status);
+
                 if (response.status === 401) {
                     alert("Incorrect password or error retrieving video.");
                     loadingIndicator.style.opacity = "0";
