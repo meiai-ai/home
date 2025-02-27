@@ -25,7 +25,7 @@
             min-height: -webkit-fill-available; /* ✅ Prevents Safari from resizing the viewport */
             overflow: hidden;
         }
-        
+
         /* ✅ Center the controls */
         #controls {
             text-align: center;
@@ -183,7 +183,7 @@
                     body: JSON.stringify({ password })
                 });
 
-                if (!response.ok) {
+                if (response.status == 401) {
                     alert("Incorrect password or error retrieving video.");
                     loadingIndicator.style.opacity = "0";
                     return;
