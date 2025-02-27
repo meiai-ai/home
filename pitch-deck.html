@@ -38,26 +38,25 @@
             transform: translate(-50%, -50%);
         }
 
-         /* ✅ Input & button wrapper (Apple-like rounded container) */
          #inputContainer {
             display: flex;
             gap: 10px;
             align-items: center;
             background: rgba(255,255,255,0.08);
             padding: 10px;
-            border-radius: 18px; /* ✅ More rounded for softer look */
+            border-radius: 18px; 
         }
 
         /* ✅ Password Input */
         input {
             width: 240px;
-            height: 50px; /* ✅ Slightly taller */
+            height: 50px; 
             font-size: 16px;
             text-align: center;
-            background: rgba(255,255,255,0.12); /* ✅ Softer Apple-like transparency */
+            background: rgba(255,255,255,0.12); 
             color: white;
             border: none;
-            border-radius: 14px; /* ✅ More rounded */
+            border-radius: 14px;
             outline: none;
             padding: 0 18px;
             display: flex;
@@ -93,7 +92,7 @@
             align-items: center;
             justify-content: center;
             transition: all 0.2s ease-in-out;
-            box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.25); /* ✅ Softer Apple-like depth */
+            box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.25); 
         }
 
         /* ✅ Reduce emoji size inside button */
@@ -147,35 +146,49 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(28, 28, 30, 0.9);
+            background: rgba(28, 28, 30, 0.95);
             color: white;
             font-size: 16px;
             font-weight: 500;
-            padding: 20px 24px;
-            border-radius: 14px;
-            text-align: center;
-            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
-            min-width: 280px;
-            max-width: 80%;
+            padding: 24px;
+            border-radius: 18px; /* ✅ Softer, rounder */
+            text-align: left;
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.4);
+            min-width: 300px;
+            max-width: 85%;
             animation: fadeIn 0.3s ease-in-out;
+            cursor: pointer; /* ✅ Clicking anywhere closes */
+        }
+
+        #alertMessage {
+            margin-bottom: 16px;
+            word-wrap: break-word;
         }
 
         #alertButton {
-            display: block;
-            margin-top: 14px;
-            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-self: flex-end; /* ✅ Aligns to the right */
+            background: linear-gradient(90deg, #0A84FF, #007AFF);
             color: white;
             border: none;
-            padding: 10px 18px;
-            font-size: 14px;
+            padding: 12px 26px;
+            font-size: 16px;
             font-weight: 600;
-            border-radius: 10px;
+            border-radius: 14px; /* ✅ Matches input & main button */
             cursor: pointer;
             transition: all 0.2s ease-in-out;
+            box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.25);
         }
 
+        /* ✅ Improve hover effect */
         #alertButton:hover {
-            background: rgba(255, 255, 255, 0.3);
+            background: linear-gradient(90deg, #007AFF, #005EC2);
+            transform: scale(1.04);
+        }
+
+        /* ✅ Button click effect */
+        #alertButton:active {
+            transform: scale(0.98);
         }
 
         /* ✅ Fade-in animation */
