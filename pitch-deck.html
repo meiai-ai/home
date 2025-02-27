@@ -196,6 +196,34 @@
             transform: scale(0.98);
         }
 
+        /* ✅ Contact button (Initially hidden) */
+        #contactButton {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 14px 28px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 14px;
+            background: linear-gradient(90deg, #0A84FF, #007AFF);
+            color: white;
+            cursor: pointer;
+            box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.25);
+            display: none; /* ✅ Hidden until triggered */
+        }
+
+        /* ✅ Hover & click effects */
+        #contactButton:hover {
+            background: linear-gradient(90deg, #007AFF, #005EC2);
+            transform: translate(-50%, -50%) scale(1.04);
+        }
+
+        #contactButton:active {
+            transform: translate(-50%, -50%) scale(0.98);
+        }
+
         /* ✅ Fade-in animation */
         @keyframes fadeIn {
             from { opacity: 0; transform: translate(-50%, -52%); }
@@ -232,6 +260,7 @@
         // ✅ Initialize Supabase Client
         const supabaseUrl = "https://tafnkthbexkmaifstqdz.supabase.co";
         const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRhZm5rdGhiZXhrbWFpZnN0cWR6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDAxODkzMjcsImV4cCI6MjA1NTc2NTMyN30.VE3pPEAExoPbn5YCRrR2b41RpZqg8EfujaSb9Gs-f64";
+        let contactEmail = null; 
 
         async function authorizeAndPlay() {
             const password = document.getElementById("videoPassword").value;
@@ -276,6 +305,33 @@
                 // ✅ Ensure mobile support
                 videoElement.setAttribute("playsinline", "true");
                 videoElement.setAttribute("muted", "true");
+
+                // ✅ Capture email from headers
+                const contactEmail = response.headers.get("X-Contact-Email");
+
+                // ✅ Create and append the contact button (only once)
+                let contactButton = document.getElementById("contactButton");
+                if (!contactButton) {
+                    contactButton = document.createElement("button");
+                    contactButton.id = "contactButton";
+                    contactButton.textContent = "📩 Contact Us";
+                    contactButton.style.display = "none"; // Keep hidden initially
+                    contactButton.onclick = () => {
+                        if (contactEmail) {
+                            window.location.href = `mailto:${contactEmail}`;
+                        } else {
+                            showAlert("Contact information unavailable.");
+                        }
+                    };
+                    document.getElementById("videoContainer").appendChild(contactButton);
+                }
+
+                // ✅ Show button when video ends or pauses
+                function showContactButton() {
+                    contactButton.style.display = "block";
+                }
+                videoElement.addEventListener("pause", showContactButton);
+                videoElement.addEventListener("ended", showContactButton);
 
                 // ✅ Try autoplay (or prompt user to tap)
                 videoElement.play().catch(() => {
