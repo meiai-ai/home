@@ -196,9 +196,9 @@
             transform: scale(0.98);
         }
 
-        /* ✅ Contact button (Initially hidden) */
+        /* ✅ Contact button should be properly centered */
         #contactButton {
-            position: absolute;
+            position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
@@ -212,6 +212,7 @@
             cursor: pointer;
             box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.25);
             display: none; /* ✅ Hidden until triggered */
+            z-index: 1002; /* ✅ Ensure it stays above dim overlay */
         }
 
         /* ✅ Hover & click effects */
@@ -222,6 +223,18 @@
 
         #contactButton:active {
             transform: translate(-50%, -50%) scale(0.98);
+        }
+
+        /* ✅ Dim background when contact is shown */
+        #dimOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.4);
+            display: none;
+            z-index: 1001; /* ✅ Below contact button, above video */
         }
 
         /* ✅ Fade-in animation */
@@ -326,18 +339,26 @@
                     document.getElementById("videoContainer").appendChild(contactButton);
                 }
 
-                // ✅ Show button when video ends or pauses
-                function showContactButton() {
-                    contactButton.style.display = "block";
+                // ✅ Function to toggle contact button and background dimming
+                function toggleContactButton(show) {
+                    const contactButton = document.getElementById("contactButton");
+                    const dimOverlay = document.getElementById("dimOverlay");
+
+                    if (show) {
+                        contactButton.style.display = "block";
+                        dimOverlay.style.display = "block";
+                    } else {
+                        contactButton.style.display = "none";
+                        dimOverlay.style.display = "none";
+                    }
                 }
 
-                function hideContactButton() {
-                    contactButton.style.display = "none"; // Hide when video resumes
-                }
+                // ✅ Show the contact button when the video is paused or ends
+                videoElement.addEventListener("pause", () => toggleContactButton(true));
+                videoElement.addEventListener("ended", () => toggleContactButton(true));
 
-                videoElement.addEventListener("pause", showContactButton);
-                videoElement.addEventListener("ended", showContactButton);
-                videoElement.addEventListener("play", hideContactButton);
+                // ✅ Hide contact button when video is played again
+                videoElement.addEventListener("play", () => toggleContactButton(false));
 
                 // ✅ Try autoplay (or prompt user to tap)
                 videoElement.play().catch(() => {
