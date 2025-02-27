@@ -196,12 +196,10 @@
             transform: scale(0.98);
         }
 
-        /* ✅ Contact button should be properly centered */
         #contactButton {
             position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            bottom: 5%;  /* ✅ Move to bottom */
+            right: 5%;   /* ✅ Move to right */
             padding: 14px 28px;
             font-size: 16px;
             font-weight: 600;
@@ -212,30 +210,17 @@
             cursor: pointer;
             box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.25);
             display: none; /* ✅ Hidden until triggered */
-            z-index: 1002; /* ✅ Ensure it stays above dim overlay */
+            transition: all 0.2s ease-in-out;
         }
 
-        /* ✅ Hover & click effects */
+        /* ✅ Improve hover & click effects */
         #contactButton:hover {
             background: linear-gradient(90deg, #007AFF, #005EC2);
-            transform: translate(-50%, -50%) scale(1.04);
+            transform: scale(1.04);
         }
 
         #contactButton:active {
-            transform: translate(-50%, -50%) scale(0.98);
-        }
-
-        /* ✅ Background dim overlay when contact button is shown */
-        #dimOverlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.4); /* ✅ Dim effect */
-            display: none;
-            z-index: 1000; /* ✅ Below contact button, above video */
-            pointer-events: none; /* ✅ Allows interactions with video */
+            transform: scale(0.98);
         }
 
         /* ✅ Fade-in animation */
@@ -340,26 +325,18 @@
                     document.getElementById("videoContainer").appendChild(contactButton);
                 }
 
-                // ✅ Function to toggle contact button and background dimming
-                function toggleContactButton(show) {
-                    const contactButton = document.getElementById("contactButton");
-                    const dimOverlay = document.getElementById("dimOverlay");
-
-                    if (show) {
-                        contactButton.style.display = "block";
-                        dimOverlay.style.display = "block";
-                    } else {
-                        contactButton.style.display = "none";
-                        dimOverlay.style.display = "none";
-                    }
+                // ✅ Show button when video ends or pauses
+                function showContactButton() {
+                    contactButton.style.display = "block";
                 }
 
-                // ✅ Show the contact button when the video is paused or ends
-                videoElement.addEventListener("pause", () => toggleContactButton(true));
-                videoElement.addEventListener("ended", () => toggleContactButton(true));
+                function hideContactButton() {
+                    contactButton.style.display = "none"; // Hide when video resumes
+                }
 
-                // ✅ Hide contact button when video is played again
-                videoElement.addEventListener("play", () => toggleContactButton(false));
+                videoElement.addEventListener("pause", showContactButton);
+                videoElement.addEventListener("ended", showContactButton);
+                videoElement.addEventListener("play", hideContactButton);
 
                 // ✅ Try autoplay (or prompt user to tap)
                 videoElement.play().catch(() => {
@@ -396,9 +373,6 @@
             document.getElementById("customAlert").style.display = "none";
         }
     </script>
-
-    <!-- ✅ Background dim overlay -->
-    <div id="dimOverlay"></div>
 
 </body>
 </html>
