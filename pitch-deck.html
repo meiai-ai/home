@@ -307,14 +307,14 @@
                 videoElement.setAttribute("muted", "true");
 
                 // ✅ Capture email from headers
-                const contactEmail = response.headers.get("X-Contact-Email");
+                const contactEmail = response.headers.get("X-Contact-Email") || null;
 
                 // ✅ Create and append the contact button (only once)
                 let contactButton = document.getElementById("contactButton");
                 if (!contactButton) {
                     contactButton = document.createElement("button");
                     contactButton.id = "contactButton";
-                    contactButton.textContent = "📩 Contact Us";
+                    contactButton.textContent = "📩 Contact Founders";
                     contactButton.style.display = "none"; // Keep hidden initially
                     contactButton.onclick = () => {
                         if (contactEmail) {
@@ -330,8 +330,14 @@
                 function showContactButton() {
                     contactButton.style.display = "block";
                 }
+
+                function hideContactButton() {
+                    contactButton.style.display = "none"; // Hide when video resumes
+                }
+
                 videoElement.addEventListener("pause", showContactButton);
                 videoElement.addEventListener("ended", showContactButton);
+                videoElement.addEventListener("play", hideContactButton);
 
                 // ✅ Try autoplay (or prompt user to tap)
                 videoElement.play().catch(() => {
