@@ -134,6 +134,49 @@
             object-fit: contain; /* ✅ Prevents cropping */
             padding-bottom: env(safe-area-inset-bottom); /* ✅ Fix for iOS notch area */
         }
+
+        #customAlert {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(28, 28, 30, 0.9);
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+            padding: 20px 24px;
+            border-radius: 14px;
+            text-align: center;
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
+            min-width: 280px;
+            max-width: 80%;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        #alertButton {
+            display: block;
+            margin-top: 14px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+
+        #alertButton:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* ✅ Fade-in animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translate(-50%, -52%); }
+            to { opacity: 1; transform: translate(-50%, -50%); }
+        }
     </style>
 </head>
 <body>
@@ -153,6 +196,12 @@
         <video id="videoPlayer" controls playsinline muted></video>
     </div>
 
+    <!-- ✅ Custom alert -->
+    <div id="customAlert">
+        <p id="alertMessage"></p>
+        <button id="alertButton" onclick="closeAlert()">OK</button>
+    </div>
+
     <script>
         // ✅ Initialize Supabase Client
         const supabaseUrl = "https://tafnkthbexkmaifstqdz.supabase.co";
@@ -165,7 +214,7 @@
             const videoElement = document.getElementById("videoPlayer");
 
             if (!password) {
-                alert("Please enter a password.");
+                showAlert("Please enter a password.");
                 return;
             }
 
@@ -184,7 +233,7 @@
                 });
 
                 if (response.status === 401) {
-                    alert("Incorrect password or error retrieving video.");
+                    showAlert("Incorrect password or error retrieving video.");
                     loadingIndicator.style.opacity = "0";
                     return;
                 }
@@ -204,7 +253,7 @@
 
                 // ✅ Try autoplay (or prompt user to tap)
                 videoElement.play().catch(() => {
-                    alert("Tap the video to start playback.");
+                    showAlert("Tap the video to start playback.");
                 });
 
                 // ✅ Hide loading indicator
@@ -215,9 +264,18 @@
 
             } catch (error) {
                 console.error("Error fetching video:", error);
-                alert("Failed to load the video.");
+                showAlert("Failed to load the video.");
                 loadingIndicator.style.opacity = "0";
             }
+        }
+
+        function showAlert(message) {
+            document.getElementById("alertMessage").textContent = message;
+            document.getElementById("customAlert").style.display = "block";
+        }
+
+        function closeAlert() {
+            document.getElementById("customAlert").style.display = "none";
         }
     </script>
 
