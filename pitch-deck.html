@@ -307,7 +307,7 @@
                 videoElement.setAttribute("muted", "true");
 
                 // ✅ Capture email from headers
-                const contactEmail = response.headers.get("X-Contact-Email") || null;
+                const contactEmail = response.headers.get("x-contact-email") || null;
 
                 // ✅ Create and append the contact button (only once)
                 let contactButton = document.getElementById("contactButton");
