@@ -277,7 +277,7 @@
                 loadingIndicator.style.opacity = "1";
 
                 // ✅ Fetch video from Edge Function
-                const response = await fetch(`${supabaseUrl}/functions/v1/decryptPitchDeck`, {
+                const response = await fetch(`${supabaseUrl}/functions/v1/unlockFoundersVideo`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
